@@ -8,28 +8,39 @@ namespace BoBo2DGameEngine
 {
     public struct Vector2
     {
-        public int x { get; set; }
-        public int y { get; set; }
-        public Vector2(int X, int Y)
+        public float x { get; set; }
+        public float y { get; set; }
+        public float Magnitude => (float)Math.Sqrt(x * x + y * y);
+
+        public Vector2(float X, float Y)
         {
             x = X;
             y = Y;
         }
 
-        void Add(Vector2 other)
+        public void Add(Vector2 other)
         {
             x += other.x;
             y += other.y;
         }
-        void Substruct(Vector2 other)
+        public void Subtract(Vector2 other)
         {
             x -= other.x;
             y -= other.y;
         }
-        void Multiply(Vector2 other)
+        public void DotProduct(Vector2 other)
         {
             x *= other.x;
             y *= other.y;
+        }
+        public float Distance(Vector2 other)
+        {
+            return new Vector2((x - other.x), (y - other.y)).Magnitude;
+        }
+        public void Normalize()
+        {
+            x = x / Magnitude;
+            y = y / Magnitude;
         }
     }
 }

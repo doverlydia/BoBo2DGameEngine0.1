@@ -7,48 +7,32 @@ using System.Threading.Tasks;
 
 namespace BoBo2DGameEngine
 {
-    public class GameObject
+    public class GameObject : Component
     {
-        public List<Component> components = new List<Component>();
+        private List<Component> components;
         GameObject parent;
         GameObjectCollection children;
-        public bool isEnabled
-        {
-            get
-            {
-                return isEnabled;
-            }
-            private set { }
-        }
         string name;
         public GameObject(string _name)
         {
             name = _name;
+            components = new List<Component>();
             components.Add(new Transform());
         }
         public GameObject(string _name, GameObject _parent)
         {
             name = _name;
             parent = _parent;
+            components = new List<Component>();
             components.Add(new Transform());
         }
         public GameObject()
         {
             name = "GameObject";
+            components = new List<Component>();
             components.Add(new Transform());
         }
-        void Enable()
-        {
-            isEnabled = true;
-            OnEnable();
-        }
-        void Disable()
-        {
-            isEnabled = false;
-            OnDisable();
-        }
-        public virtual void OnEnable() { }
-        public virtual void OnDisable() { }
+
         public IEnumerable<Component> GetComponenets<T>() => (from component in components where component is T select component);
         public Component GetComponenet<T>() => GetComponenets<T>().FirstOrDefault();
         public void AddComponenet<T>() where T : Component => components.Add(Activator.CreateInstance<T>());
