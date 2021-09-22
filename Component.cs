@@ -8,27 +8,36 @@ namespace BoBo2DGameEngine
 {
     public class Component : IComponent
     {
-        public bool isEnabled { get; private set; }
+        private bool _enabled;
+
+        public bool Enabled
+        {
+            get => _enabled;
+            set
+            {
+                if (value == true)
+                {
+                    _enabled = true;
+                    OnEnable();
+                }
+                else
+                {
+                    _enabled = false;
+                    OnDisable();
+                }
+            }
+        }
+
         public Component()
         {
-            
+
         }
         public void Awake() { }
 
         public void Start() { }
 
         public void Update() { }
-        void Enable()
-        {
-            isEnabled = true;
-            OnEnable();
-        }
-        void Disable()
-        {
-            isEnabled = false;
-            OnDisable();
-        }
-        public virtual void OnEnable() { }
-        public virtual void OnDisable() { }
+        public void OnEnable() { }
+        public void OnDisable() { }
     }
 }

@@ -11,5 +11,7 @@ namespace BoBo2DGameEngine
         void Awake();
         void Start();
         void Update();
+        void OnEnable();
+        void OnDisable();
     }
 }

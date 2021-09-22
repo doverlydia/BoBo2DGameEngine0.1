@@ -11,11 +11,6 @@ namespace BoBo2DGameEngine
         string title;
         public readonly Scene activeScene;
 
-        DateTime _lastTime; // marks the beginning the measurement began
-        int _framesRendered; // an increasing count
-        int _fps; // the FPS calculated from the last measurement
-        public float time = 0;
-
         public Game()
         {
             title = "New Game";
@@ -32,20 +27,5 @@ namespace BoBo2DGameEngine
             LoadScene();
             return true;
         }
-        public void Update()
-        {
-            _framesRendered++;
-
-            if ((DateTime.Now - _lastTime).TotalSeconds >= 1)
-            {
-                time++;
-                // one second has elapsed 
-
-                _fps = _framesRendered;
-                _framesRendered = 0;
-                _lastTime = DateTime.Now;
-            }
-        }
-
     }
 }
