@@ -1,43 +1,35 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Threading;
 
 namespace BoBo2DGameEngine
 {
-    public sealed class Time : Component
+    public sealed class Time
     {
         public static double DeltaTime {get; private set;}
+        public static int FrameRate { get; private set; }
+        
         private static double _secondFrame;
         private static readonly Stopwatch StopWatch = new();
 
-        public Time() : base()
+        public Time()
         { }
-        public override void Start()
+
+        public static void TimeCalc(int frameRate)
         {
+            FrameRate = frameRate;
             StopWatch.Start();
-            Console.WriteLine("time Start!");
-            StartTheTime();
-        }
-        public override void Update()
-        {
-            Thread.Sleep(1000);
-            Events.OnTick.Invoke();
-        }
+            while (true)
+            {
+                var ts = StopWatch.Elapsed;
+                var firstFrame = ts.TotalMilliseconds;
 
-        private static void StartTheTime()
-        {
-            var ts = StopWatch.Elapsed;
-            var firstFrame = ts.TotalMilliseconds;
-
-            DeltaTime = firstFrame - _secondFrame;
-
-            _secondFrame = ts.TotalMilliseconds;
-            Events.OnTick.Invoke();
+                DeltaTime = firstFrame - _secondFrame;
+                _secondFrame = ts.TotalMilliseconds;
+                Events.OnTick.Invoke();
+                Thread.Sleep(1000/frameRate);
+            }
         }
     }
 }

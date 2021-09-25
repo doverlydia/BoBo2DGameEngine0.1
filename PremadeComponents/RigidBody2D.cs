@@ -9,13 +9,17 @@ namespace BoBo2DGameEngine
 {
     public class RigidBody2D : Component
     {
-
         public RigidBody2D() : base()
         {
         }
         public override void OnEnable()
         {
             Console.WriteLine("RigidBody OnEnable!");
+        }
+
+        public override void Start()
+        {
+            Console.WriteLine("RigidBody Start!");
         }
 
         public override void Update()

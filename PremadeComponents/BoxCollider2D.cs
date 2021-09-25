@@ -40,9 +40,19 @@ namespace BoBo2DGameEngine
                 boxA.Bottom > boxB.Top;
         }
 
+        public override void OnEnable()
+        {
+            Console.WriteLine("Box Collider OnEnable!");
+        }
+
+        public override void Start()
+        {
+            Console.WriteLine("Box Collider Start!");
+        }
+
         public override void Update()
         {
-            Console.WriteLine("Box Collider Update");
+            Console.WriteLine("Box Collider Update!");
         }
     }
 }

@@ -8,7 +8,7 @@ namespace BoBo2DGameEngine
 {
     public class Component : IComponent
     {
-        private bool _enabled;
+        private bool _enabled = true;
 
         public bool Enabled
         {

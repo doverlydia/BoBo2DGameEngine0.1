@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BoBo2DGameEngine
@@ -12,14 +13,18 @@ namespace BoBo2DGameEngine
         private readonly List<Scene> _scenes;
         public Scene ActiveScene;
         private bool _isGameRunning;
-        private Time _time = new();
+        private readonly Thread _time = new Thread(()=>Time.TimeCalc(1));
         public bool IsGameRunning
         {
             get => _isGameRunning;
             set
             {
                 if (value)
+                {
                     _isGameRunning = RunGame();
+                }
+                else
+                    Console.WriteLine("Run Game Failed");
             }
         }
 
@@ -47,6 +52,7 @@ namespace BoBo2DGameEngine
 
         private bool RunGame()
         {
+            _time.Start();
             return LoadScene(ActiveScene);
         }
     }
