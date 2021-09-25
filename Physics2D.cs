@@ -8,6 +8,6 @@ namespace BoBo2DGameEngine
 {
     public static class Physics2D
     {
-        static float gravity;
+        private static readonly float gravity;
     }
 }

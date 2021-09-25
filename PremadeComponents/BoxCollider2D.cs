@@ -8,36 +8,41 @@ namespace BoBo2DGameEngine
 {
     public class BoxCollider2D : Component
     {
-        public Transform transform { get; private set; }
-        public float left => transform.position.x;
-        public float right => transform.position.x + transform.scale.x;
-        public float top => transform.position.y ;
-        public float bottom => transform.position.y + transform.scale.y;
+        public Transform Transform { get; private set; }
+        public float Left => Transform.Position.X;
+        public float Right => Transform.Position.X + Transform.Scale.X;
+        public float Top => Transform.Position.Y ;
+        public float Bottom => Transform.Position.Y + Transform.Scale.Y;
 
         public BoxCollider2D() : base()
         {
-            transform = new Transform();
+            Transform = new Transform();
         }
         public BoxCollider2D(Transform transform) : base()
         {
-            this.transform = transform;
+            this.Transform = transform;
         }
         public BoxCollider2D(Vector2 scale) : base()
         {
-            transform = new Transform(new Vector2(), scale);
+            Transform = new Transform(new Vector2(), scale);
         }
         public BoxCollider2D(Vector2 scale, Vector2 position) : base()
         {
-            transform = new Transform(position, scale);
+            Transform = new Transform(position, scale);
         }
 
         public bool AABB(BoxCollider2D boxA, BoxCollider2D boxB)
         {
             return
-                boxA.left < boxB.right &&
-                boxA.right > boxB.left &&
-                boxA.top < boxB.bottom &&
-                boxA.bottom > boxB.top;
+                boxA.Left < boxB.Right &&
+                boxA.Right > boxB.Left &&
+                boxA.Top < boxB.Bottom &&
+                boxA.Bottom > boxB.Top;
+        }
+
+        public override void Update()
+        {
+            Console.WriteLine("Box Collider Update");
         }
     }
 }

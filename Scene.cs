@@ -6,12 +6,22 @@ using System.Threading.Tasks;
 
 namespace BoBo2DGameEngine
 {
-    public class Scene
+    public class Scene : Component
     {
-        GameObjectCollection Hierarchy;
-        public Scene()
+        private readonly string _title = "New Scene";
+        public readonly GameObjectCollection Hierarchy;
+        public Scene() : base()
         {
             Hierarchy = new GameObjectCollection();
+        }
+        public Scene(string title) : base()
+        {
+            _title = title;
+            Hierarchy = new GameObjectCollection();
+        }
+        public override void OnEnable()
+        {
+            Events.OnSceneLoaded.Invoke();
         }
     }
 }

@@ -8,7 +8,6 @@ namespace BoBo2DGameEngine
 {
     public interface IComponent
     {
-        void Awake();
         void Start();
         void Update();
         void OnEnable();

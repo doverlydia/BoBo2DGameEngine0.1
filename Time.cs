@@ -1,30 +1,43 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace BoBo2DGameEngine
 {
-    public class Time
+    public sealed class Time : Component
     {
-        DateTime _lastTime; // marks the beginning the measurement began
-        int _framesRendered; // an increasing count
-        int _fps; // the FPS calculated from the last measurement
-        public float time = 0;
-        public void CalculateTime()
+        public static double DeltaTime {get; private set;}
+        private static double _secondFrame;
+        private static readonly Stopwatch StopWatch = new();
+
+        public Time() : base()
+        { }
+        public override void Start()
         {
-            _framesRendered++;
+            StopWatch.Start();
+            Console.WriteLine("time Start!");
+            StartTheTime();
+        }
+        public override void Update()
+        {
+            Thread.Sleep(1000);
+            Events.OnTick.Invoke();
+        }
 
-            if ((DateTime.Now - _lastTime).TotalSeconds >= 1)
-            {
-                time++;
-                // one second has elapsed 
+        private static void StartTheTime()
+        {
+            var ts = StopWatch.Elapsed;
+            var firstFrame = ts.TotalMilliseconds;
 
-                _fps = _framesRendered;
-                _framesRendered = 0;
-                _lastTime = DateTime.Now;
-            }
+            DeltaTime = firstFrame - _secondFrame;
+
+            _secondFrame = ts.TotalMilliseconds;
+            Events.OnTick.Invoke();
         }
     }
 }

@@ -9,36 +9,41 @@ namespace BoBo2DGameEngine
 {
     public class GameObject : Component
     {
-        private List<Component> components;
-        GameObject parent;
-        GameObjectCollection children;
-        string name;
-        public GameObject(string _name)
+        private readonly List<Component> _components;
+        private readonly GameObjectCollection _children;
+        private GameObject _parent;
+        public readonly string Name;
+        public GameObject(string name)
         {
-            name = _name;
-            components = new List<Component>();
-            components.Add(new Transform());
+            Name = name;
+            _components = new List<Component> { new Transform() };
         }
-        public GameObject(string _name, GameObject _parent)
+        public GameObject(string name, GameObject parent)
         {
-            name = _name;
-            parent = _parent;
-            components = new List<Component>();
-            components.Add(new Transform());
+            Name = name;
+            this._parent = parent;
+            _components = new List<Component> { new Transform() };
         }
         public GameObject()
         {
-            name = "GameObject";
-            components = new List<Component>();
-            components.Add(new Transform());
+            Name = "GameObject";
+            _components = new List<Component> { new Transform() };
         }
 
-        public IEnumerable<Component> GetComponenets<T>() => (from component in components where component is T select component);
-        public Component GetComponenet<T>() => GetComponenets<T>().FirstOrDefault();
-        public void AddComponenet<T>() where T : Component => components.Add(Activator.CreateInstance<T>());
-        public void RemoveComponent<T>() where T : Component => components.Remove(GetComponenet<T>());
-        public void RemoveSpecificComponent(Component component) => components.Remove(component);
-        public void SetParent(GameObject parent) => this.parent = parent;
+        public IEnumerable<T> GetComponents<T>() where T : Component => (from component in _components
+                                                                         where component is T
+                                                                         select (T)component);
+        public T GetComponent<T>() where T : Component => GetComponents<T>().FirstOrDefault();
+
+        public T AddComponent<T>() where T : Component
+        {
+            var comp = Activator.CreateInstance<T>();
+            _components.Add(comp);
+            return comp;
+        } 
+        public void RemoveComponent<T>() where T : Component => _components.Remove(GetComponent<T>());
+        public void RemoveSpecificComponent(Component component) => _components.Remove(component);
+        public void SetParent(GameObject parent) => this._parent = parent;
         void Destroy() { }
     }
 }

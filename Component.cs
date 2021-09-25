@@ -30,14 +30,17 @@ namespace BoBo2DGameEngine
 
         public Component()
         {
-
+            Events.OnSceneLoaded.AddListener(Start);
+            Events.OnTick.AddListener(Update);
+            Events.OnDisabled.AddListener(OnDisable);
         }
-        public void Awake() { }
 
-        public void Start() { }
+        public virtual void Start() { }
 
-        public void Update() { }
-        public void OnEnable() { }
-        public void OnDisable() { }
+        public virtual void Update() { }
+
+        public virtual void OnEnable() { }
+
+        public virtual void OnDisable() { }
     }
 }

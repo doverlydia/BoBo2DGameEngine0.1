@@ -7,20 +7,21 @@ using System.Threading.Tasks;
 
 namespace BoBo2DGameEngine
 {
-    class GameObjectCollection : IEnumerable<GameObject>
+    public class GameObjectCollection : IEnumerable<GameObject>
     {
-        private List<GameObject> gameObjects;
+        private readonly Dictionary<string, GameObject> _gameObjects;
         public GameObjectCollection()
         {
-            gameObjects = new List<GameObject>();
+            _gameObjects = new Dictionary<string, GameObject>();
         }
         public void Add(GameObject gameObject)
         {
             if (gameObject is null) return;
-            gameObjects.Add(gameObject);
+            _gameObjects.Add(gameObject.Name,gameObject);
         }
-        public void Add() => gameObjects.Add(new GameObject());
-        public IEnumerator<GameObject> GetEnumerator() => gameObjects.GetEnumerator();
-        IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)gameObjects).GetEnumerator();
+        public void Add() => _gameObjects.Add("NewGameObject",new GameObject());
+        public GameObject GetGameObjectByName(string name) => _gameObjects[name];
+        public IEnumerator<GameObject> GetEnumerator() => _gameObjects.Values.GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)_gameObjects).GetEnumerator();
     }
 }
