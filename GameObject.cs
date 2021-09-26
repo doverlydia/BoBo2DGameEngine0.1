@@ -30,9 +30,7 @@ namespace BoBo2DGameEngine
             _components = new List<Component> { new Transform() };
         }
 
-        public IEnumerable<T> GetComponents<T>() where T : Component => (from component in _components
-                                                                         where component is T
-                                                                         select (T)component);
+        public IEnumerable<T> GetComponents<T>() where T : Component => (_components.OfType<T>());
         public T GetComponent<T>() where T : Component => GetComponents<T>().FirstOrDefault();
 
         public T AddComponent<T>() where T : Component

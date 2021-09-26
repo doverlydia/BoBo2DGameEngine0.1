@@ -10,10 +10,9 @@ namespace BoBo2DGameEngine
 {
     class Program
     {
-        private static double _counter = 0;
         static void Main(string[] args)
         {
-            Game myGame = new();
+            Game myGame = new("MyGame", 1);
 
             #region adding_game_objects_with_componenets
             myGame.ActiveScene.Hierarchy.Add(new GameObject("obj1"));
@@ -30,6 +29,7 @@ namespace BoBo2DGameEngine
             #endregion
 
             Console.WriteLine("starting...");
+            Console.WriteLine(myGame.ActiveScene.Hierarchy.GetGameObjectByName("obj1").GetComponents<RigidBody2D>().ToString());
             myGame.IsGameRunning = true;
             Console.WriteLine("succeeded");
             Console.ReadLine();

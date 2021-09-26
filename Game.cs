@@ -13,7 +13,8 @@ namespace BoBo2DGameEngine
         private readonly List<Scene> _scenes;
         public Scene ActiveScene;
         private bool _isGameRunning;
-        private readonly Thread _time = new Thread(()=>Time.TimeCalc(1));
+        private static int _frameRate = 0;
+        private readonly Thread _time = new(()=>Time.TimeCalc(_frameRate));
         public bool IsGameRunning
         {
             get => _isGameRunning;
@@ -32,14 +33,22 @@ namespace BoBo2DGameEngine
         {
             _scenes = new List<Scene> { new() };
             ActiveScene = _scenes[0];
+            _frameRate = 30;
         }
         public Game(string title)
         {
             _scenes = new List<Scene> { new() };
             ActiveScene = _scenes[0];
             _title = title;
+            _frameRate = 30;
         }
-
+        public Game(string title, int frameRate)
+        {
+            _scenes = new List<Scene> { new() };
+            ActiveScene = _scenes[0];
+            _title = title;
+            _frameRate = frameRate;
+        }
         public void AddScene() => _scenes.Add(new Scene());
         public void AddScene(string title) => _scenes.Add(new Scene(title));
 
@@ -55,5 +64,6 @@ namespace BoBo2DGameEngine
             _time.Start();
             return LoadScene(ActiveScene);
         }
+
     }
 }
