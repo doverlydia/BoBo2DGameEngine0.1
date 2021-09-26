@@ -31,6 +31,8 @@ namespace BoBo2DGameEngine
             Console.WriteLine("starting...");
             Console.WriteLine(myGame.ActiveScene.Hierarchy.GetGameObjectByName("obj1").GetComponents<RigidBody2D>().ToString());
             myGame.IsGameRunning = true;
+            //Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            //Console.WriteLine(version);
             Console.WriteLine("succeeded");
             Console.ReadLine();
         }
