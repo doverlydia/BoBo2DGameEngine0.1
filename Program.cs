@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SharpDX.MediaFoundation;
 
 namespace BoBo2DGameEngine
 {
@@ -18,14 +12,8 @@ namespace BoBo2DGameEngine
             myGame.ActiveScene.Hierarchy.Add(new GameObject("obj1"));
             myGame.ActiveScene.Hierarchy.GetGameObjectByName("obj1").AddComponent<BoxCollider2D>().Enabled = true;
             myGame.ActiveScene.Hierarchy.GetGameObjectByName("obj1").AddComponent<RigidBody2D>().Enabled = true;
-
-            myGame.ActiveScene.Hierarchy.Add(new GameObject("obj2"));
-            myGame.ActiveScene.Hierarchy.GetGameObjectByName("obj2").AddComponent<BoxCollider2D>().Enabled = true;
-            myGame.ActiveScene.Hierarchy.GetGameObjectByName("obj2").AddComponent<RigidBody2D>().Enabled = true;
-
-            myGame.ActiveScene.Hierarchy.Add(new GameObject("obj3"));
-            myGame.ActiveScene.Hierarchy.GetGameObjectByName("obj3").AddComponent<BoxCollider2D>().Enabled = true;
-            myGame.ActiveScene.Hierarchy.GetGameObjectByName("obj3").AddComponent<RigidBody2D>().Enabled = true;
+            myGame.ActiveScene.Hierarchy.GetGameObjectByName("obj1").GetComponent<RigidBody2D>().BodyType = BodyType.Dynamic;
+            Console.WriteLine("my name is: " + myGame.ActiveScene.Hierarchy.GetGameObjectByName("obj1").GetComponent<RigidBody2D>().GameObject.Name);
             #endregion
 
             Console.WriteLine("starting...");

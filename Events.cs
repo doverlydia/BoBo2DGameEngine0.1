@@ -22,7 +22,7 @@ namespace BoBo2DGameEngine
             Action.Invoke();
         }
 
-        public void AddListener(Action listener)
+        public void UpsertListener(Action listener)
         {
             Action -= listener;
             Action += listener;

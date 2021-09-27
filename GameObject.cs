@@ -36,12 +36,14 @@ namespace BoBo2DGameEngine
         public T AddComponent<T>() where T : Component
         {
             var comp = Activator.CreateInstance<T>();
+            comp.GameObject = this;
             _components.Add(comp);
             return comp;
         } 
         public void RemoveComponent<T>() where T : Component => _components.Remove(GetComponent<T>());
         public void RemoveSpecificComponent(Component component) => _components.Remove(component);
         public void SetParent(GameObject parent) => this._parent = parent;
-        void Destroy() { }
+
+        void Destroy(){}
     }
 }

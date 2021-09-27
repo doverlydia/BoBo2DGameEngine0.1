@@ -18,11 +18,10 @@ namespace BoBo2DGameEngine
         private bool _useGravity;
         private float _gravityScale = 1;
         private BodyType _bodyType;
-
         public BodyType BodyType
         {
             get => _bodyType;
-            private set
+            set
             {
                 _bodyType = value;
                 switch (value)
@@ -69,6 +68,7 @@ namespace BoBo2DGameEngine
 
         public RigidBody2D() : base()
         {
+            
         }
 
         public override void OnEnable()
@@ -87,7 +87,10 @@ namespace BoBo2DGameEngine
         public override void Update()
         {
             Console.WriteLine("RigidBody2D Update!");
-            Simulate();
+            if (_useGravity)
+            {
+                Simulate();
+            }
         }
 
 
@@ -104,7 +107,7 @@ namespace BoBo2DGameEngine
             Console.WriteLine(Position.Y);
         }
 
-        public void ApplyConstantForce(){}
+        public void ApplyConstantForce() { }
 
     }
 }
