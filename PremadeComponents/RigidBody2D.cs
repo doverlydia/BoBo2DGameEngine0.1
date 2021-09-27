@@ -48,7 +48,6 @@ namespace BoBo2DGameEngine
         public float AngularVelocity = 0f;
         public float AngularAcceleration = 0f;
         public float AngularDrag = 0f;
-        public Vector2 Position;
         public BoxCollider2D BoxCollider2D;
 
         public float Mass
@@ -66,7 +65,7 @@ namespace BoBo2DGameEngine
             }
         }
 
-        public RigidBody2D() : base()
+        public RigidBody2D(GameObject gameObject) : base(gameObject)
         {
             
         }
@@ -99,15 +98,17 @@ namespace BoBo2DGameEngine
             Velocity.Add(Acceleration);
             Velocity.X *= Drag;
             Velocity.Y *= Drag;
-            Position.Add(Velocity);
+            GameObject.GetComponent<Transform>().Position.Add(Velocity);
             AngularVelocity += AngularAcceleration;
             AngularVelocity *= AngularDrag;
             Angle += AngularVelocity;
-            Console.WriteLine(Position.X);
-            Console.WriteLine(Position.Y);
         }
 
         public void ApplyConstantForce() { }
 
+        public void SetGravityScale(float value)
+        {
+            _gravityScale = value;
+        }
     }
 }

@@ -19,7 +19,12 @@ namespace BoBo2DGameEngine
             if (gameObject is null) return;
             _gameObjects.Add(gameObject.Name,gameObject);
         }
-        public void Add() => _gameObjects.Add("NewGameObject",new GameObject());
+        public void Remove(GameObject gameObject)
+        {
+            if (gameObject is null) return;
+            _gameObjects.Remove(gameObject.Name);
+        }
+        public void Add() => _gameObjects.Add("NewGameObject", new GameObject());
         public GameObject GetGameObjectByName(string name) => _gameObjects[name];
         public IEnumerator<GameObject> GetEnumerator() => _gameObjects.Values.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)_gameObjects).GetEnumerator();

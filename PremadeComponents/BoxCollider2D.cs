@@ -14,21 +14,9 @@ namespace BoBo2DGameEngine
         public float Top => Transform.Position.Y ;
         public float Bottom => Transform.Position.Y + Transform.Scale.Y;
 
-        public BoxCollider2D() : base()
+        public BoxCollider2D(GameObject gameObject) : base(gameObject)
         {
-            Transform = new Transform();
-        }
-        public BoxCollider2D(Transform transform) : base()
-        {
-            this.Transform = transform;
-        }
-        public BoxCollider2D(Vector2 scale) : base()
-        {
-            Transform = new Transform(new Vector2(), scale);
-        }
-        public BoxCollider2D(Vector2 scale, Vector2 position) : base()
-        {
-            Transform = new Transform(position, scale);
+            Transform = new Transform(gameObject, Vector2.One);
         }
 
         public bool AABB(BoxCollider2D boxA, BoxCollider2D boxB)

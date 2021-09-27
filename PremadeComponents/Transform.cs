@@ -11,20 +11,15 @@ namespace BoBo2DGameEngine
         public Vector2 Position { get; private set; }
         public Vector2 Scale { get; private set; }
 
-        public Transform() : base()
+        public Transform(GameObject gameObject) : base(gameObject)
         {
             Position = new Vector2();
             Scale = new Vector2();
         }
-        public Transform(Vector2 position) : base()
+        public Transform(GameObject gameObject, Vector2 scale) : base(gameObject)
         {
-            this.Position = position;
-            Scale = new Vector2();
-        }
-        public Transform(Vector2 position, Vector2 scale) : base()
-        {
-            this.Position = position;
-            this.Scale = scale;
+            Position = new Vector2();
+            Scale = scale;
         }
     }
 }

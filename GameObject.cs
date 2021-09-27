@@ -7,27 +7,37 @@ using System.Threading.Tasks;
 
 namespace BoBo2DGameEngine
 {
-    public class GameObject : Component
+    public class GameObject
     {
         private readonly List<Component> _components;
-        private readonly GameObjectCollection _children;
+        private readonly GameObjectCollection _children = new();
         private GameObject _parent;
+        public GameObject Parent
+        {
+            get => _parent;
+            set
+            {
+                _parent?._children.Remove(this);
+                _parent = value;
+                _parent._children.Add(this);
+            }
+        }
         public readonly string Name;
         public GameObject(string name)
         {
             Name = name;
-            _components = new List<Component> { new Transform() };
+            _components = new List<Component> { new Transform(this) };
         }
         public GameObject(string name, GameObject parent)
         {
             Name = name;
             this._parent = parent;
-            _components = new List<Component> { new Transform() };
+            _components = new List<Component> { new Transform(this) };
         }
         public GameObject()
         {
             Name = "GameObject";
-            _components = new List<Component> { new Transform() };
+            _components = new List<Component> { new Transform(this) };
         }
 
         public IEnumerable<T> GetComponents<T>() where T : Component => (_components.OfType<T>());
@@ -35,14 +45,13 @@ namespace BoBo2DGameEngine
 
         public T AddComponent<T>() where T : Component
         {
-            var comp = Activator.CreateInstance<T>();
-            comp.GameObject = this;
+            var comp = (T)Activator.CreateInstance(typeof(T), this);
             _components.Add(comp);
             return comp;
         } 
         public void RemoveComponent<T>() where T : Component => _components.Remove(GetComponent<T>());
         public void RemoveSpecificComponent(Component component) => _components.Remove(component);
-        public void SetParent(GameObject parent) => this._parent = parent;
+        public void SetParent(GameObject parent) => Parent = parent;
 
         void Destroy(){}
     }
