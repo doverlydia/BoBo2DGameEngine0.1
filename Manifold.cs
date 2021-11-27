@@ -8,8 +8,9 @@ namespace BoBo2DGameEngine
 {
     public struct Manifold
     {
-        public RigidBody2D A, B;
-        public float PenetrationDepth;
+        public BoxCollider2D A, B;
+        public float XPenetrationDepth;
+        public float YPenetrationDepth;
         public Vector2 Normal;
         public bool AreColliding;
     }

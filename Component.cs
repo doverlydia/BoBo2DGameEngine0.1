@@ -11,20 +11,6 @@ namespace BoBo2DGameEngine
         private bool _enabled = true;
 
         public readonly GameObject GameObject;
-        //public GameObject GameObject
-        //{
-        //    //get => _gameObject;
-        //    //set
-        //    //{
-        //    //    if (_gameObject == null)
-        //    //        _gameObject = value;
-        //    //    else
-        //    //    {
-        //    //        throw new AccessViolationException("Cant modify gameObjects of components");
-        //    //    }
-        //    //}
-        //}
-
         public bool Enabled
         {
             get => _enabled;
@@ -34,10 +20,14 @@ namespace BoBo2DGameEngine
                 {
                     _enabled = true;
                     OnEnable();
+                    Events.OnSceneLoaded.UpsertListener(Start);
+                    Events.OnTick.UpsertListener(Update);
                 }
                 else
                 {
                     _enabled = false;
+                    Events.OnSceneLoaded.RemoveListener(Start);
+                    Events.OnTick.RemoveListener(Update);
                     OnDisable();
                 }
             }
@@ -46,9 +36,7 @@ namespace BoBo2DGameEngine
         public Component(GameObject gameObject)
         {
             GameObject = gameObject;
-            Events.OnSceneLoaded.UpsertListener(Start);
-            Events.OnTick.UpsertListener(Update);
-            Events.OnDisabled.UpsertListener(OnDisable);
+            Enabled = true;
         }
 
         public virtual void Start() { }
@@ -58,6 +46,5 @@ namespace BoBo2DGameEngine
         public virtual void OnEnable() { }
 
         public virtual void OnDisable() { }
-
     }
 }

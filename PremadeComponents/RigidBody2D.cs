@@ -16,7 +16,6 @@ namespace BoBo2DGameEngine
     public class RigidBody2D : Component
     {
         private bool _useGravity;
-        private float _gravityScale = 1;
         private BodyType _bodyType;
         public BodyType BodyType
         {
@@ -24,50 +23,24 @@ namespace BoBo2DGameEngine
             set
             {
                 _bodyType = value;
-                switch (value)
+                _useGravity = value switch
                 {
-                    case BodyType.Dynamic:
-                        _useGravity = true;
-                        //do stuff.
-                        break;
-                    case BodyType.Static:
-                        _useGravity = false;
-                        //do stuff.
-                        break;
-                }
+                    BodyType.Dynamic => true,
+                    BodyType.Static => false,
+                    _ => _useGravity
+                };
             }
         }
 
-        public Vector2 Velocity = Vector2.Zero;
-        public Vector2 Acceleration = Vector2.Zero;
-        private float _mass = 1f;
-        public float InvertedMass { get; private set; }
-        public float Restitution = 0f;
-        public float Drag = 1f;
-        public float Angle = 0f;
-        public float AngularVelocity = 0f;
-        public float AngularAcceleration = 0f;
-        public float AngularDrag = 0f;
-        public BoxCollider2D BoxCollider2D;
+        public float GravityScale { get; set; } = 1;
 
-        public float Mass
-        {
-            get => _mass;
-            set
-            {
-                if (value < 0) throw new Exception("Mass cannot be less than zero!");
-                _mass = value;
-
-                if (value == 0)
-                    InvertedMass = 0;
-                else
-                    InvertedMass = 1 / _mass;
-            }
-        }
+        //Implement Later
+        //public Vector2 Velocity = Vector2.Zero;
+        //public Vector2 Acceleration = Vector2.Zero;
 
         public RigidBody2D(GameObject gameObject) : base(gameObject)
         {
-            
+
         }
 
         public override void OnEnable()
@@ -78,9 +51,6 @@ namespace BoBo2DGameEngine
         public override void Start()
         {
             Console.WriteLine("RigidBody Start!");
-            Acceleration = new Vector2(5, 5);
-            Drag = 8;
-
         }
 
         public override void Update()
@@ -88,27 +58,17 @@ namespace BoBo2DGameEngine
             Console.WriteLine("RigidBody2D Update!");
             if (_useGravity)
             {
-                Simulate();
+                ApplyConstantForce(Physics2D.Gravity * GravityScale, Vector2.Down);
+                Console.WriteLine("Applied "+Physics2D.Gravity*GravityScale+" Force in Direction "+Vector2.Down+" for "+GameObject.Name);
             }
         }
-
-
-        public void Simulate()
+        public void ApplyConstantForce(float force, Vector2 dir)
         {
-            Velocity.Add(Acceleration);
-            Velocity.X *= Drag;
-            Velocity.Y *= Drag;
-            GameObject.GetComponent<Transform>().Position.Add(Velocity);
-            AngularVelocity += AngularAcceleration;
-            AngularVelocity *= AngularDrag;
-            Angle += AngularVelocity;
-        }
-
-        public void ApplyConstantForce() { }
-
-        public void SetGravityScale(float value)
-        {
-            _gravityScale = value;
+            Vector2 temp = new(dir.X * force, dir.Y * force);
+            GameObject.Transform.Position = Vector2.Add(GameObject.Transform.Position, temp);
+            Console.WriteLine("Gravity: "+Physics2D.Gravity);
+            Console.WriteLine("The Vector I want To Add: "+temp);
+            Console.WriteLine("My Position: "+GameObject.Transform.Position);
         }
     }
 }

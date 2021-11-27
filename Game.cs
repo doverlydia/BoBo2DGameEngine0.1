@@ -14,7 +14,7 @@ namespace BoBo2DGameEngine
         public Scene ActiveScene;
         private bool _isGameRunning;
         private static int _frameRate = 0;
-        private readonly Thread _time = new(()=>Time.TimeCalc(_frameRate));
+        private readonly Thread _time = new(() => Time.TimeCalc(_frameRate));
         public bool IsGameRunning
         {
             get => _isGameRunning;
@@ -31,12 +31,14 @@ namespace BoBo2DGameEngine
 
         public Game()
         {
+            Events.InternalPhysicsUpdate.UpsertListener(Physics2D.CheckForCollisions);
             _scenes = new List<Scene> { new() };
             ActiveScene = _scenes[0];
             _frameRate = 30;
         }
         public Game(string title)
         {
+            Events.InternalPhysicsUpdate.UpsertListener(Physics2D.CheckForCollisions);
             _scenes = new List<Scene> { new() };
             ActiveScene = _scenes[0];
             _title = title;
@@ -44,13 +46,14 @@ namespace BoBo2DGameEngine
         }
         public Game(string title, int frameRate)
         {
+            Events.InternalPhysicsUpdate.UpsertListener(Physics2D.CheckForCollisions);
             _scenes = new List<Scene> { new() };
             ActiveScene = _scenes[0];
             _title = title;
             _frameRate = frameRate;
         }
         public void AddScene() => _scenes.Add(new Scene());
-        public void AddScene(string title) => _scenes.Add(new Scene(title));
+        public void AddScene(string title) => _scenes.Add(new Scene(title)); //for when i make LoadSceneByName();
 
         private bool LoadScene(Scene scene)
         {

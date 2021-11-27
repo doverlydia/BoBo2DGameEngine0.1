@@ -27,6 +27,7 @@ namespace BoBo2DGameEngine
 
                 DeltaTime = firstFrame - _secondFrame;
                 _secondFrame = ts.TotalMilliseconds;
+                Events.InternalPhysicsUpdate.Invoke();
                 Events.OnTick.Invoke();
                 Thread.Sleep(1000/frameRate);
             }

@@ -1,59 +1,63 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace BoBo2DGameEngine
 {
-    public struct Vector2 : IEquatable<Vector2>
+    public struct Vector2
     {
         public float X { get; set; }
         public float Y { get; set; }
         public float Magnitude => (float)Math.Sqrt(X * X + Y * Y);
 
-        private static readonly Vector2 _zero = new Vector2();
-        private static readonly Vector2 _one = new Vector2(1f, 1f);
+        private static readonly Vector2 _zero = new(0, 0);
+        private static readonly Vector2 _one = new(1f, 1f);
+        private static readonly Vector2 _up = new(0f, 1f);
+        private static readonly Vector2 _down = new(0f, -1f);
+        private static readonly Vector2 _left = new(-1f, 0f);
+        private static readonly Vector2 _right = new(1f, 0f);
+
         public static Vector2 Zero => Vector2._zero;
         public static Vector2 One => Vector2._one;
+        public static Vector2 Up => Vector2._up;
+        public static Vector2 Down => Vector2._down;
+        public static Vector2 Left => Vector2._left;
+        public static Vector2 Right => Vector2._right;
 
+        public Vector2 Normalized => new(X /= Magnitude, Y /= Magnitude);
+        public Vector2 Abs => new(Math.Abs(X), Math.Abs(Y));
         public Vector2(float x, float y)
         {
             X = x;
             Y = y;
         }
 
-        public void Add(Vector2 other)
+        public static Vector2 Add(Vector2 vector1, Vector2 vector2)
         {
-            X += other.X;
-            Y += other.Y;
+            return new Vector2(vector1.X + vector2.X, vector1.Y + vector2.Y);
         }
-        public void Subtract(Vector2 other)
+        public static Vector2 Subtract(Vector2 vector1, Vector2 vector2)
         {
-            X -= other.X;
-            Y -= other.Y;
+            return new Vector2(vector1.X - vector2.X, vector1.Y - vector2.Y);
         }
-        public void DotProduct(Vector2 other)
+        public static Vector2 DotProduct(Vector2 vector1, Vector2 vector2)
         {
-            X *= other.X;
-            Y *= other.Y;
+            return new Vector2(vector1.X * vector2.X, vector1.Y * vector2.Y);
         }
-        public float Distance(Vector2 other)
+        public static float Distance(Vector2 vector1, Vector2 vector2)
         {
-            return new Vector2((X - other.X), (Y - other.Y)).Magnitude;
+            return new Vector2((vector1.X - vector2.X), (vector1.Y - vector2.Y)).Magnitude;
         }
-        public void Normalize()
+        public float Length(Vector2 vector2) => (float)Math.Sqrt((double)vector2.X * (double)vector2.X + (double)vector2.Y * (double)vector2.Y);
+        public static Vector2 Lerp(Vector2 value1, Vector2 value2, float amount)
         {
-            X /= Magnitude;
-            Y /= Magnitude;
+            Vector2 result = new(value1.X + (value2.X - value1.X) * amount,
+                value1.Y + (value2.Y - value1.Y) * amount);
+            return result;
         }
 
-        public bool Equals(Vector2 other) => X == other.X && Y == other.Y;
-        public float Length() => (float)Math.Sqrt((double)this.X * (double)this.X + (double)this.Y * (double)this.Y);
-        public Vector2 Lerp(ref Vector2 value1, ref Vector2 value2, float amount)
+        public override string ToString()
         {
-            Vector2 result = new()
-            {
-                X = value1.X + (value2.X - value1.X) * amount,
-                Y = value1.Y + (value2.Y - value1.Y) * amount
-            };
-            return result;
+            return X + "," + Y;
         }
     }
 }

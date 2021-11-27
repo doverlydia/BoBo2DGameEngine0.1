@@ -9,7 +9,7 @@ namespace BoBo2DGameEngine
     public class Scene
     {
         private readonly string _title = "New Scene";
-        public readonly GameObjectCollection Hierarchy;
+        public readonly Hirerarchy hierarchy;
         private bool _enabled = true;
         public bool Enabled
         {
@@ -30,17 +30,19 @@ namespace BoBo2DGameEngine
         }
         public Scene()
         {
-            Hierarchy = new GameObjectCollection();
+            hierarchy = new();
+            Console.WriteLine("New scene: " + _title);
         }
         public Scene(string title)
         {
             _title = title;
-            Hierarchy = new GameObjectCollection();
+            hierarchy = new();
+            Console.WriteLine("created scene: "+_title);
         }
         public void OnEnable()
         {
             Events.OnSceneLoaded.Invoke();
         }
-        public void OnDisable(){}
+        public void OnDisable() { }
     }
 }

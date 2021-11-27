@@ -9,50 +9,80 @@ namespace BoBo2DGameEngine
 {
     public class GameObject
     {
-        private readonly List<Component> _components;
-        private readonly GameObjectCollection _children = new();
-        private GameObject _parent;
-        public GameObject Parent
+        private bool _enabled = true;
+        public bool IsEnabled
         {
-            get => _parent;
+            get => _enabled;
             set
             {
-                _parent?._children.Remove(this);
-                _parent = value;
-                _parent._children.Add(this);
+                if (value == true)
+                {
+                    _enabled = true;
+                    OnEnable();
+                }
+                else
+                {
+                    _enabled = false;
+                    OnDisable();
+                }
             }
         }
-        public readonly string Name;
-        public GameObject(string name)
+
+        private readonly List<Component> _components;
+        public readonly Transform Transform;
+        public readonly Tag tag = Tag.Untagged;
+        public readonly string name = "GameObject";
+        private Hirerarchy myHirerarchy;
+
+        public GameObject(Hirerarchy hire)
         {
-            Name = name;
-            _components = new List<Component> { new Transform(this) };
+            Transform = new Transform(this);
+            _components = new List<Component> { Transform };
+            myHirerarchy = hire;
         }
-        public GameObject(string name, GameObject parent)
+        public GameObject(string _name, Hirerarchy hire)
         {
-            Name = name;
-            this._parent = parent;
-            _components = new List<Component> { new Transform(this) };
-        }
-        public GameObject()
-        {
-            Name = "GameObject";
-            _components = new List<Component> { new Transform(this) };
+            name = _name;
+            Transform = new Transform(this);
+            _components = new List<Component> { Transform };
+            myHirerarchy = hire;
         }
 
+        public Component GetComponent(int i) => _components[i];
         public IEnumerable<T> GetComponents<T>() where T : Component => (_components.OfType<T>());
         public T GetComponent<T>() where T : Component => GetComponents<T>().FirstOrDefault();
-
+        //I want to implement TryGetComponent later
         public T AddComponent<T>() where T : Component
         {
-            var comp = (T)Activator.CreateInstance(typeof(T), this);
+            var comp = default(T);
             _components.Add(comp);
             return comp;
-        } 
+        }
         public void RemoveComponent<T>() where T : Component => _components.Remove(GetComponent<T>());
         public void RemoveSpecificComponent(Component component) => _components.Remove(component);
-        public void SetParent(GameObject parent) => Parent = parent;
+        public bool CompareTag(GameObject other)
+        {
+            return this.tag == other.tag;
+        }
+        void OnEnable()
+        {
+            foreach (var comp in _components)
+            {
+                comp.Enabled = true;
+            }
+        }
+        void OnDisable()
+        {
+            foreach (var comp in _components)
+            {
+                comp.Enabled = false;
+            }
+        }
 
-        void Destroy(){}
+        public void Destroy()
+        {
+            OnDisable();
+            myHirerarchy.Remove(name);
+        }
     }
 }

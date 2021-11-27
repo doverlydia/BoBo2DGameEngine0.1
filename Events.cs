@@ -9,8 +9,8 @@ namespace BoBo2DGameEngine
     public static class Events
     {
         public static readonly Evt OnSceneLoaded = new ();
+        public static readonly Evt InternalPhysicsUpdate = new();
         public static readonly Evt OnTick = new ();
-        public static readonly Evt OnDisabled = new ();
     }
 
     public class Evt
