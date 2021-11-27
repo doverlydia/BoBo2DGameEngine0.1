@@ -11,9 +11,9 @@ namespace BoBo2DGameEngine
 
             #region adding_game_objects_with_componenets
             Physics2D.Gravity = 1; // assigning the gravity force value;
-            GameObject obj3 = myGame.ActiveScene.hierarchy.AddNewGameObject();
-            obj3.GetComponent<Transform>().Position = new Vector2(0, 5);
-            GameObject obj2 = myGame.ActiveScene.hierarchy.AddNewGameObject();
+            GameObject obj1 = myGame.ActiveScene.hierarchy.AddNewGameObject("obj1");
+            obj1.GetComponent<Transform>().Position = new Vector2(0, 5);
+            GameObject obj2 = myGame.ActiveScene.hierarchy.AddNewGameObject("obj2");
             obj2.GetComponent<Transform>().Position = new Vector2(0, -5);
 
             obj2.AddComponent<BoxCollider2D>().Enabled = true;
@@ -21,10 +21,10 @@ namespace BoBo2DGameEngine
             obj2.GetComponent<RigidBody2D>().BodyType = BodyType.Static;
             obj2.GetComponent<RigidBody2D>().Enabled = true;
 
-            obj3.AddComponent<BoxCollider2D>().Enabled = true;
-            obj3.AddComponent<RigidBody2D>();
-            obj3.GetComponent<RigidBody2D>().BodyType = BodyType.Dynamic; // here i apply constant force to just one of the objects
-            obj3.GetComponent<RigidBody2D>().Enabled = true;
+            obj1.AddComponent<BoxCollider2D>().Enabled = true;
+            obj1.AddComponent<RigidBody2D>();
+            obj1.GetComponent<RigidBody2D>().BodyType = BodyType.Dynamic; // here i apply constant force to just one of the objects
+            obj1.GetComponent<RigidBody2D>().Enabled = true;
             #endregion
 
 

@@ -26,22 +26,22 @@ namespace BoBo2DGameEngine
 
         public override void OnEnable()
         {
-            Console.WriteLine(GameObject + ": Box Collider OnEnable!");
+            Console.WriteLine(GameObject.Name + ": Box Collider OnEnable!");
         }
 
         public override void Start()
         {
-            Console.WriteLine(GameObject + ": Box Collider Start!");
+            Console.WriteLine(GameObject.Name + ": Box Collider Start!");
         }
 
         public override void Update()
         {
-            Console.WriteLine(GameObject + ": Box Collider Update!");
+            Console.WriteLine(GameObject.Name + ": Box Collider Update!");
         }
 
         public virtual void OnCollision()
         {
-            Console.WriteLine(GameObject + ": OnCollision!");
+            Console.WriteLine(GameObject.Name + ": OnCollision!");
         }
     }
 }

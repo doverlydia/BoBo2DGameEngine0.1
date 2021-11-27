@@ -7,41 +7,26 @@ using System.Threading.Tasks;
 
 namespace BoBo2DGameEngine
 {
-    public class Hirerarchy : IEnumerable<Tree<GameObject>> // I know sorting them by name is wrong, need to make this more robust
+    public class Hirerarchy // I know sorting them by name is wrong, need to make this more robust
     {
-        private readonly Dictionary<string, Tree<GameObject>> _gameObjects;
+        private readonly Tree _hirerachy;
 
         public Hirerarchy()
         {
-            _gameObjects = new Dictionary<string, Tree<GameObject>>();
+            _hirerachy = new();
         }
         public GameObject AddNewGameObject()
         {
-            Tree<GameObject> obj = new(this);
-            _gameObjects.Add(obj._root.Data.name, obj);
-            return obj._root.Data;
+            return (GameObject)_hirerachy._root.AddChild(new GameObject());
         }
-        public void Remove(string name)
+        public GameObject AddNewGameObject(string name)
         {
-            if (name is null) return;
-            foreach (var gameObjectTree in _gameObjects)
-            {
-                foreach (var item in gameObjectTree.Value._root.)
-                {
-
-                }
-            }
-            _gameObjects.Remove(name);
+            return (GameObject)_hirerachy._root.AddChild(new GameObject(name));
         }
-        public void Remove(Tree<GameObject> gameObject)
+        public void Remove(GameObject gameObject)
         {
-            if (gameObject is null) return;
-            _gameObjects.Remove(gameObject._root.Data.name);
+            if (gameObject == null) return;
+            _hirerachy._root.RemoveChild(gameObject);
         }
-
-        public GameObject GetGameObjectByName(string name) => _gameObjects[name]._root.Data;
-
-        public IEnumerator<Tree<GameObject>> GetEnumerator() => _gameObjects.Values.GetEnumerator();
-        IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)_gameObjects).GetEnumerator();
     }
 }

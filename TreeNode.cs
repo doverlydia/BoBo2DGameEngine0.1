@@ -1,35 +1,26 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace BoBo2DGameEngine
 {
-    public class TreeNode<T>
+    public class TreeNode : IEnumerable<TreeNode>
     {
-        public delegate bool TraversalDataDelegate(T data);
-        public delegate bool TraversalNodeDelegate(TreeNode<T> node);
-
-        protected TreeNode<T> _parent;
+        protected TreeNode _parent;
         protected int _level;
 
-        protected readonly T _data;
-        protected readonly List<TreeNode<T>> _children;
+        public readonly List<TreeNode> _children;
 
-        public readonly Tree<T> _tree;
-
-        public TreeNode(Tree<T> tree)
+        public TreeNode()
         {
-            _tree = tree;
-            _data = default;
-        }
-
-        public TreeNode(T data, Tree<T> tree) : this(tree)
-        {
-            _data = data;
-            _children = new List<TreeNode<T>>();
+            _children = new List<TreeNode>();
             _level = 0;
         }
 
-        public TreeNode(T data, TreeNode<T> parent, Tree<T> tree) : this(data, tree)
+        public TreeNode(TreeNode parent)
         {
             _parent = parent;
             _level = _parent != null ? _parent.Level + 1 : 0;
@@ -39,8 +30,7 @@ namespace BoBo2DGameEngine
         public int Count { get { return _children.Count; } }
         public bool IsRoot { get { return _parent == null; } }
         public bool IsLeaf { get { return _children.Count == 0; } }
-        public T Data { get { return _data; } }
-        public TreeNode<T> Parent
+        public TreeNode Parent
         {
             get
             {
@@ -55,69 +45,58 @@ namespace BoBo2DGameEngine
             }
         }
 
-        public TreeNode<T> this[int key]
+        public TreeNode this[int key]
         {
             get { return _children[key]; }
         }
 
         public void Clear()
         {
+            foreach (var item in _children)
+            {
+                item.Parent = null;
+            }
             _children.Clear();
         }
 
-        public TreeNode<T> AddChild(T value)
+        public TreeNode AddChild(TreeNode node)
         {
-            TreeNode<T> node = new(value, this, _tree);
             _children.Add(node);
 
             return node;
         }
 
-        public TreeNode<T> AddChild()
+        public bool HasChild(TreeNode node)
         {
-            return AddChild(default);
+            return FindInChildren(node) != null;
         }
 
-        public bool HasChild(T data)
-        {
-            return FindInChildren(data) != null;
-        }
-
-        public TreeNode<T> FindInChildren(T data)
+        public TreeNode FindInChildren(TreeNode node)
         {
             int i = 0, l = Count;
             for (; i < l; ++i)
             {
-                TreeNode<T> child = _children[i];
-                if (child.Data.Equals(data)) return child;
+                TreeNode child = _children[i];
+                if (child.Equals(node)) return child;
             }
 
             return null;
         }
-
-        public bool RemoveChild(TreeNode<T> node)
+        public bool RemoveChild(TreeNode node)
         {
             node._parent = null;
             return _children.Remove(node);
         }
+        public IEnumerable<T> GetChildren<TreeNode>() where TreeNode : T => _children.OfType<T>();
+        public T GetChild<TreeNode>() where TreeNode : T => GetChildren<T>().FirstOrDefault();
 
-        public void Traverse(TraversalDataDelegate handler)
+        public IEnumerator<TreeNode> GetEnumerator()
         {
-            if (handler(_data))
-            {
-                int i = 0, l = Count;
-                for (; i < l; ++i) _children[i].Traverse(handler);
-            }
+            return ((IEnumerable<TreeNode>)_children).GetEnumerator();
         }
-
-        public void Traverse(TraversalNodeDelegate handler)
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            if (handler(this))
-            {
-                int i = 0, l = Count;
-                for (; i < l; ++i) _children[i].Traverse(handler);
-            }
+            return ((IEnumerable)_children).GetEnumerator();
         }
-
     }
 }
